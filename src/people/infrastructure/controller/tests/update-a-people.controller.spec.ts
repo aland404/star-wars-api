@@ -28,8 +28,8 @@ describe('UNIT - AppController - updateAPeople', () => {
 
   describe('updateAPeople', () => {
     it('should update all the people info', () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
-      const peopleToUpdate = peopleForTest.twoRandomPeople[1]
+      MockedPeople.people = [...peopleForTest.jedis]
+      const peopleToUpdate = peopleForTest.jedis[1]
       const infoToUpdate = {
         slug: peopleToUpdate.slug,
         actors: "My new actors",
@@ -55,8 +55,8 @@ describe('UNIT - AppController - updateAPeople', () => {
     });
 
     it('should update partially the people info', () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
-      const peopleToUpdate = peopleForTest.twoRandomPeople[1]
+      MockedPeople.people = [...peopleForTest.jedis]
+      const peopleToUpdate = peopleForTest.jedis[1]
       const infoToUpdate: UpdatePeopleDto = {
         slug: peopleToUpdate.slug,
         director: "My new director",
@@ -71,8 +71,8 @@ describe('UNIT - AppController - updateAPeople', () => {
       expect(updatedPeople).toStrictEqual({ ...peopleToUpdate, ...infoToUpdate });
     });
     it('should crash with different slug error', async () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
-      const peopleToUpdate = peopleForTest.twoRandomPeople[1]
+      MockedPeople.people = [...peopleForTest.jedis]
+      const peopleToUpdate = peopleForTest.jedis[1]
       const infoToUpdate = {
         slug: "My different slug",
         actors: "My new actors",
@@ -100,8 +100,8 @@ describe('UNIT - AppController - updateAPeople', () => {
       }
     });
     it('should crash with no matching people found error', async () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
-      const peopleToUpdate = { ...peopleForTest.twoRandomPeople[1], slug: "Inexisting slug" }
+      MockedPeople.people = [...peopleForTest.jedis]
+      const peopleToUpdate = { ...peopleForTest.jedis[1], slug: "Inexisting slug" }
       
       const infoToUpdate = {
         slug: peopleToUpdate.slug,

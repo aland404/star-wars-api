@@ -1,0 +1,15 @@
+meta {
+  name: Get rebellion characters
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/star-wars/people?faction=rebellion
+  body: none
+  auth: none
+}
+
+query {
+  faction: rebellion
+}

@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Inject, Param, Post, Put } from '@nestjs/common';
-import { ApiTags } from "@nestjs/swagger";
-import { People } from "../../domain/people";
-import { PeopleRepository } from "../../domain/peopleRepository.interface";
-import { CreatePeopleDto, UpdatePeopleDto } from "../dtos";
+import {Body, Controller, Delete, Get, Inject, Param, Post, Put, Query} from '@nestjs/common';
+import {ApiTags} from "@nestjs/swagger";
+import {People} from "../../domain/people";
+import {PeopleRepository} from "../../domain/peopleRepository.interface";
+import {CreatePeopleDto, UpdatePeopleDto} from "../dtos";
+import {GetPeopleQuery} from "../queries/GetPeopleQuery";
 
 @ApiTags('people')
 @Controller('people')
@@ -11,8 +12,8 @@ export class PeopleController {
     }
 
     @Get('/')
-    getPeople(): People[] {
-        return this.peopleRepository.getPeople()
+    getPeople(@Query() queries?: GetPeopleQuery): People[] {
+        return this.peopleRepository.getPeople(queries?.faction)
     }
 
     @Delete('/:peopleSlug')

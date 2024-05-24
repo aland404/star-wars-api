@@ -26,7 +26,7 @@ describe('UNIT - AppController - getPeople', () => {
 
   describe('getPeople', () => {
     it('should return 2 people', () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
+      MockedPeople.people = [...peopleForTest.jedis]
 
       const foundPeople = appController.getPeople()
 

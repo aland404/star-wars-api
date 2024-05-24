@@ -9,51 +9,64 @@ import {Faction} from "../src/people/domain/people";
 const MockedPeople = jest.requireMock('../src/people/infrastructure/people');
 
 jest.mock('../src/people/infrastructure/people', () => ({
-  people: []
+    people: []
 }))
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication;
+    let app: INestApplication;
 
-  beforeEach(async () => {
-    MockedPeople.people = [...peopleForTest.twoRandomPeople]
+    beforeEach(async () => {
+        MockedPeople.people = [...peopleForTest.aMixOfDifferentKindOfPeople]
 
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+        const moduleFixture: TestingModule = await Test.createTestingModule({
+            imports: [AppModule],
+        }).compile();
 
-    app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe());
-    await app.init();
-  });
+        app = moduleFixture.createNestApplication();
+        app.useGlobalPipes(new ValidationPipe());
+        await app.init();
+    });
 
-  it('/people (GET)', () => {
-    return request(app.getHttpServer())
-        .get('/people')
-        .expect(200)
-        .expect(MockedPeople.people);
-  });
+    it('/people (GET 200)', () => {
+        return request(app.getHttpServer())
+            .get('/people')
+            .expect(200)
+            .expect(MockedPeople.people);
+    });
 
-  it('/people/:peopleSlug (DELETE)', () => {
-    const peopleToDelete = peopleForTest.twoRandomPeople[0]
+    it('/people?faction=rebellion (GET 200)', () => {
+        return request(app.getHttpServer())
+            .get('/people?faction=rebellion')
+            .expect(200)
+            .expect(peopleForTest.jedis);
+    });
 
-    return request(app.getHttpServer())
-        .delete(`/people/${peopleToDelete.slug}`)
-        .expect(200)
-        .expect(`People with slug ${peopleToDelete.slug} has been deleted`);
-  });
+    it('/people?faction=unexpectedFaction (GET 400)', () => {
+        return request(app.getHttpServer())
+            .get('/people?faction=unexpectedFaction')
+            .expect(400);
+    });
 
-  it('/people/:peopleSlug (PUT)', () => {
-    const peopleToUpdate = peopleForTest.twoRandomPeople[1]
-    const fieldsToUpdate: UpdatePeopleDto = {
-      faction: Faction.REBELLION,
-      power: 77
-    }
+    it('/people/:peopleSlug (DELETE)', () => {
+        const peopleToDelete = peopleForTest.jedis[0]
 
-    return request(app.getHttpServer())
-        .put(`/people/${peopleToUpdate.slug}`)
-        .send(fieldsToUpdate)
-        .expect(200)
-        .expect({ ...peopleToUpdate, ...fieldsToUpdate });
-  });
+        return request(app.getHttpServer())
+            .delete(`/people/${peopleToDelete.slug}`)
+            .expect(200)
+            .expect(`People with slug ${peopleToDelete.slug} has been deleted`);
+    });
+
+    it('/people/:peopleSlug (PUT)', () => {
+        const peopleToUpdate = peopleForTest.jedis[1]
+        const fieldsToUpdate: UpdatePeopleDto = {
+            faction: Faction.REBELLION,
+            power: 77
+        }
+
+        return request(app.getHttpServer())
+            .put(`/people/${peopleToUpdate.slug}`)
+            .send(fieldsToUpdate)
+            .expect(200)
+            .expect({...peopleToUpdate, ...fieldsToUpdate});
+    });
 });

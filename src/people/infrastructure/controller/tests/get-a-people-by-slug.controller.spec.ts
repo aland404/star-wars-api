@@ -26,8 +26,8 @@ describe('UNIT - AppController - getAPeopleBySlug', () => {
 
   describe('getAPeopleBySlug', () => {
     it('should find the corresponding people', () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
-      const peopleToFind = peopleForTest.twoRandomPeople[1]
+      MockedPeople.people = [...peopleForTest.jedis]
+      const peopleToFind = peopleForTest.jedis[1]
 
       const foundPeople = appController.getAPeopleBySlug(peopleToFind.slug)
 
@@ -36,7 +36,7 @@ describe('UNIT - AppController - getAPeopleBySlug', () => {
 
 
     it('should not find the corresponding people', () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
+      MockedPeople.people = [...peopleForTest.jedis]
       const peopleToFind = peopleForTest.unexistingPeople
 
       const foundPeople = appController.getAPeopleBySlug(peopleToFind.slug)

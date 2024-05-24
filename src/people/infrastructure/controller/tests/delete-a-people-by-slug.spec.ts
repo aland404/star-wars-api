@@ -26,8 +26,8 @@ describe('UNIT - AppController - deleteAPeopleBySlug', () => {
 
   describe('deleteAPeopleBySlug', () => {
     it('should delete the first people', () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
-      const peopleToDelete = peopleForTest.twoRandomPeople[0]
+      MockedPeople.people = [...peopleForTest.jedis]
+      const peopleToDelete = peopleForTest.jedis[0]
 
       const deletedInfo = appController.deletePeopleBySlug(peopleToDelete.slug)
 
@@ -35,8 +35,8 @@ describe('UNIT - AppController - deleteAPeopleBySlug', () => {
     });
 
     it('should delete the second people', () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
-      const peopleToDelete = peopleForTest.twoRandomPeople[1]
+      MockedPeople.people = [...peopleForTest.jedis]
+      const peopleToDelete = peopleForTest.jedis[1]
 
       const deletedInfo = appController.deletePeopleBySlug(peopleToDelete.slug)
 

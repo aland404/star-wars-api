@@ -1,14 +1,18 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { People } from "../domain/people";
-import { PeopleRepository } from "../domain/peopleRepository.interface";
-import { CreatePeopleDto, UpdatePeopleDto } from "./dtos";
-import { createPeopleDtoToPeople } from './mappers';
-import { people } from "./people";
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {Faction, People} from "../domain/people";
+import {PeopleRepository} from "../domain/peopleRepository.interface";
+import {CreatePeopleDto, UpdatePeopleDto} from "./dtos";
+import {createPeopleDtoToPeople} from './mappers';
+import {people} from "./people";
 
 
 @Injectable()
 export class InMemoryPeopleRepository implements PeopleRepository {
-    getPeople(): People[] {
+    getPeople(faction?: Faction): People[] {
+        if (faction) {
+            return people.filter(currentPeople => currentPeople.faction === faction)
+        }
+
         return people
     }
 
@@ -30,10 +34,11 @@ export class InMemoryPeopleRepository implements PeopleRepository {
         const peopleToUpdateIndex = people.findIndex(people => people.slug === peopleSlug)
         if (peopleToUpdateIndex < 0) throw new HttpException('No corresponding people found', HttpStatus.NOT_FOUND)
 
-        people[peopleToUpdateIndex] = { ...people[peopleToUpdateIndex], ...peopleToUpdate }
+        people[peopleToUpdateIndex] = {...people[peopleToUpdateIndex], ...peopleToUpdate}
 
         return people[peopleToUpdateIndex]
     }
+
     createAPeople(peopleToCreate: CreatePeopleDto): People {
         const peopleToUpdateIndex = people.findIndex(people => people.slug === peopleToCreate.slug)
         if (peopleToUpdateIndex >= 0) throw new HttpException('Slug already existing', HttpStatus.CONFLICT)

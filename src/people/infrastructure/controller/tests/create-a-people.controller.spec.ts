@@ -29,7 +29,7 @@ describe('UNIT - AppController - createAPeople', () => {
 
   describe('createAPeople', () => {
     it('should create a people with all values', () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
+      MockedPeople.people = [...peopleForTest.jedis]
       const peopleToCreate: CreatePeopleDto = {
         slug: 'chewie',
         kind: Kind.WOOKIE,
@@ -42,9 +42,9 @@ describe('UNIT - AppController - createAPeople', () => {
       expect(createdPeople).toStrictEqual(peopleToCreate);
     })
     it('should crash with slug already existing error', async () => {
-      MockedPeople.people = [...peopleForTest.twoRandomPeople]
+      MockedPeople.people = [...peopleForTest.jedis]
       const peopleToCreate: CreatePeopleDto = {
-        slug: peopleForTest.twoRandomPeople[0].slug,
+        slug: peopleForTest.jedis[0].slug,
         kind: Kind.WOOKIE,
         faction: Faction.REBELLION,
         power: 50
