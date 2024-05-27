@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {WarRepository} from "../domain";
-import {WarEntity} from "./entities";
+import {BattleEntity, WarEntity} from "./entities";
 import {wars} from "./in-memory-wars";
 
 @Injectable()
@@ -9,7 +9,11 @@ export class InMemoryWarsRepository implements WarRepository {
         return wars
     }
 
-    getAWarBySlug(slug: string): WarEntity | undefined {
-        return wars.find(war => war.slug === slug)
+    getAWarBySlug(warSlug: string): WarEntity | undefined {
+        return wars.find(war => war.slug === warSlug)
+    }
+
+    getABattleBySlug(warSlug: string, battleSlug: string): BattleEntity | undefined {
+        return wars.find(war => war.slug === warSlug)?.battles.find(battle => battleSlug === battle.slug)
     }
 }

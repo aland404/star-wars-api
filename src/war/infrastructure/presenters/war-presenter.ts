@@ -1,5 +1,5 @@
 import {People} from "../../../people/domain/people";
-import {Place} from "../../domain";
+import {BattleResult, Place} from "../../domain";
 
 export type WarPresenter = {
     slug: string,
@@ -14,10 +14,17 @@ export type TroopPresenter = {
 }
 
 export type BattlePresenter = {
+    slug: string,
     name: string,
     description?: string,
     location: LocationPresenter,
     troops: TroopPresenter[]
+}
+
+export type BattleSummupPresenter = {
+    name: string,
+    winner: BattleResult | undefined,
+    loser: BattleResult | undefined
 }
 
 export type LocationPresenter = {
