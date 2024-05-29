@@ -1,12 +1,13 @@
 import {CreatePeopleDto, UpdatePeopleDto} from "../infrastructure/dtos";
-import {Faction, People} from "./people";
+import {Faction} from "./people";
+import {PeopleEntity} from "../infrastructure/entities";
 
 export interface PeopleRepository {
-    createAPeople(peopleToCreate: CreatePeopleDto): People
-    getPeople(faction?: Faction): People[]
+    createAPeople(peopleToCreate: CreatePeopleDto): PeopleEntity
+    getPeople(faction?: Faction): PeopleEntity[]
     deleteAPeopleBySug(peopleSlug: string): string
-    getAPeopleBySlug(slug: string): People | undefined
-    updateAPeople(peopleSlug: string, peopleToUpdate: UpdatePeopleDto): People
+    getAPeopleBySlug(slug: string): PeopleEntity | undefined
+    updateAPeople(peopleSlug: string, peopleToUpdate: UpdatePeopleDto): PeopleEntity
 }
 
 export const PeopleRepository = Symbol("PeopleRepository")

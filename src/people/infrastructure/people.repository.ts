@@ -1,14 +1,15 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {Faction, People} from "../domain/people";
+import {Faction} from "../domain/people";
 import {PeopleRepository} from "../domain/peopleRepository.interface";
 import {CreatePeopleDto, UpdatePeopleDto} from "./dtos";
 import {createPeopleDtoToPeople} from './mappers';
 import {people} from "./people";
+import {PeopleEntity} from "./entities";
 
 
 @Injectable()
 export class InMemoryPeopleRepository implements PeopleRepository {
-    getPeople(faction?: Faction): People[] {
+    getPeople(faction?: Faction): PeopleEntity[] {
         if (faction) {
             return people.filter(currentPeople => currentPeople.faction === faction)
         }
@@ -26,11 +27,11 @@ export class InMemoryPeopleRepository implements PeopleRepository {
         return `People with slug ${peopleSlug} has been deleted`
     }
 
-    getAPeopleBySlug(slug: string): People | undefined {
+    getAPeopleBySlug(slug: string): PeopleEntity | undefined {
         return people.find(people => people.slug === slug);
     }
 
-    updateAPeople(peopleSlug: string, peopleToUpdate: UpdatePeopleDto): People {
+    updateAPeople(peopleSlug: string, peopleToUpdate: UpdatePeopleDto): PeopleEntity {
         const peopleToUpdateIndex = people.findIndex(people => people.slug === peopleSlug)
         if (peopleToUpdateIndex < 0) throw new HttpException('No corresponding people found', HttpStatus.NOT_FOUND)
 
@@ -39,11 +40,11 @@ export class InMemoryPeopleRepository implements PeopleRepository {
         return people[peopleToUpdateIndex]
     }
 
-    createAPeople(peopleToCreate: CreatePeopleDto): People {
+    createAPeople(peopleToCreate: CreatePeopleDto): PeopleEntity {
         const peopleToUpdateIndex = people.findIndex(people => people.slug === peopleToCreate.slug)
         if (peopleToUpdateIndex >= 0) throw new HttpException('Slug already existing', HttpStatus.CONFLICT)
 
-        const peopleToAdd: People = createPeopleDtoToPeople(peopleToCreate)
+        const peopleToAdd: PeopleEntity = createPeopleDtoToPeople(peopleToCreate)
         people.push(peopleToAdd)
 
         return peopleToAdd

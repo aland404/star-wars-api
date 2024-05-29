@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsNumber, IsOptional, IsString} from 'class-validator';
+import {IsNumber, IsOptional, IsString} from 'class-validator';
 import {Faction} from "../../domain/people";
 
 export class UpdatePeopleDto {

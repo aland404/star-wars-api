@@ -1,9 +1,23 @@
-import {Body, Controller, Delete, Get, Inject, Param, Post, Put, Query} from '@nestjs/common';
-import {ApiTags} from "@nestjs/swagger";
-import {People} from "../../domain/people";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpException,
+    HttpStatus,
+    Inject,
+    Param,
+    Post,
+    Put,
+    Query
+} from '@nestjs/common';
+import {ApiQuery, ApiTags} from "@nestjs/swagger";
+import {Faction} from "../../domain/people";
 import {PeopleRepository} from "../../domain/peopleRepository.interface";
 import {CreatePeopleDto, UpdatePeopleDto} from "../dtos";
 import {GetPeopleQuery} from "../queries/GetPeopleQuery";
+import {PeoplePresenter} from "../presenters/people.presenter";
+import {toPeoplePresenter} from "../presenters/to-people-presenter";
 
 @ApiTags('people')
 @Controller('people')
@@ -12,8 +26,9 @@ export class PeopleController {
     }
 
     @Get('/')
-    getPeople(@Query() queries?: GetPeopleQuery): People[] {
-        return this.peopleRepository.getPeople(queries?.faction)
+    @ApiQuery({name: 'faction', enum: Faction, description: 'The faction of the people'})
+    getPeople(@Query() queries?: GetPeopleQuery): PeoplePresenter[] {
+        return this.peopleRepository.getPeople(queries?.faction).map(people => toPeoplePresenter(people))
     }
 
     @Delete('/:peopleSlug')
@@ -22,19 +37,22 @@ export class PeopleController {
     }
 
     @Get('/:peopleSlug')
-    getAPeopleBySlug(@Param('peopleSlug') peopleSlug: string): People | undefined {
-        return this.peopleRepository.getAPeopleBySlug(peopleSlug)
+    getAPeopleBySlug(@Param('peopleSlug') peopleSlug: string): PeoplePresenter | undefined {
+        const people = this.peopleRepository.getAPeopleBySlug(peopleSlug)
+        if(!people) throw new HttpException('No people found', HttpStatus.NOT_FOUND)
+
+        return toPeoplePresenter(people)
     }
 
 
     @Post('/')
-    createAPeople(@Body() peopleToCreate: CreatePeopleDto): People {
-        return this.peopleRepository.createAPeople(peopleToCreate);
+    createAPeople(@Body() peopleToCreate: CreatePeopleDto): PeoplePresenter {
+        return toPeoplePresenter(this.peopleRepository.createAPeople(peopleToCreate))
     }
 
 
     @Put('/:peopleSlug')
-    updateAPeople(@Param('peopleSlug') peopleSlug: string, @Body() peopleToUpdate: UpdatePeopleDto): People {
-        return this.peopleRepository.updateAPeople(peopleSlug, peopleToUpdate);
+    updateAPeople(@Param('peopleSlug') peopleSlug: string, @Body() peopleToUpdate: UpdatePeopleDto): PeoplePresenter {
+        return toPeoplePresenter(this.peopleRepository.updateAPeople(peopleSlug, peopleToUpdate))
     }
 }
