@@ -1,11 +1,18 @@
 import {People} from "../../../people/domain/people";
-import {BattleResult, Place} from "../../domain";
+import {BattleResult, Place, WarResult} from "../../domain";
 
 export type WarPresenter = {
     slug: string,
     name: string,
     description?: string,
     battles: BattlePresenter[]
+}
+
+export type WarSummaryPresenter = {
+    name: string,
+    description?: string,
+    loser: WarResult,
+    winner: WarResult
 }
 
 export type TroopPresenter = {
