@@ -1,6 +1,5 @@
 import {BattleEntity, WarEntity} from "./entities";
 import {Place} from "../domain";
-import {Faction, Kind} from "../../people/domain/people";
 import {empireDroid, jedi, sithLord, rebellionSoldier, stormTrooper} from "../../people/infrastructure/people";
 
 const deathStarBattle: BattleEntity = {

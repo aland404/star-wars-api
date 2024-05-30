@@ -11,10 +11,10 @@ import {PeopleController} from "./people/infrastructure/controller/people.contro
 @Module({
     imports: [AuthModule, UsersModule],
     controllers: [PeopleController, WarController],
-    providers: [{provide: PeopleRepository, useClass: InMemoryPeopleRepository}, {
-        provide: WarRepository,
-        useClass: InMemoryWarsRepository
-    }],
+    providers: [
+        {provide: PeopleRepository, useClass: InMemoryPeopleRepository},
+        {provide: WarRepository, useClass: InMemoryWarsRepository}
+    ]
 })
 export class AppModule {
 }

@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from "@nestjs/common";
+import {Logger, ValidationPipe} from "@nestjs/common";
 
 
 async function bootstrap() {
@@ -10,14 +10,20 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-      .setTitle('People')
-      .setDescription('The People API description')
-      .setVersion('0.0.1')
-      .addTag('people')
+      .setTitle('Star Wars')
+      .setDescription(`Cette API permet de manipuler des personnages et des véhicules de l'univers de Star Wars.
+      Elle permet également d'obtenir des informations sur des guerres et des batailles en fonctionn de troupes disponibles sur ces champs de batailles.
+      Une gestion d'authentification est également disponible.`)
+      .setVersion('1.0.0')
       .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  app.enableCors();
   await app.listen(3000);
+
+  const logger = new Logger('bootstrap');
+  logger.log(`Listening on ${await app.getUrl()}/star-wars`);
+  logger.log(`API documentation available on ${await app.getUrl()}/api`);
 }
 bootstrap();
