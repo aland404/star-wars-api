@@ -1,1 +1,1 @@
-export * from "./people.entity"
+export * from './people.entity'

@@ -1,12 +1,12 @@
-import {IsNumber, IsOptional, IsString} from 'class-validator';
-import {Faction} from "../../domain/people";
+import { IsNumber, IsOptional, IsString } from 'class-validator'
+import type { Faction } from '../../domain/people'
 
 export class UpdatePeopleDto {
-    @IsString()
-    @IsOptional()
-    readonly faction?: Faction;
+  @IsString()
+  @IsOptional()
+  readonly faction?: Faction
 
-    @IsNumber()
-    @IsOptional()
-    readonly power?: number;
+  @IsNumber()
+  @IsOptional()
+  readonly power?: number
 }

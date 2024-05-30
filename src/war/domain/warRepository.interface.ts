@@ -1,11 +1,12 @@
-import {BattleEntity, WarEntity} from "../infrastructure/entities";
+import type { BattleEntity, WarEntity } from '../infrastructure/entities'
 
 export interface WarRepository {
-    getAWarBySlug(slug: string): WarEntity | undefined
+  getAWarBySlug: (slug: string) => WarEntity | undefined
 
-    getWars(): WarEntity[]
+  getWars: () => WarEntity[]
 
-    getABattleBySlug(warSlug: string, battleSlug: string): BattleEntity | undefined;
+  getABattleBySlug: (warSlug: string, battleSlug: string) => BattleEntity | undefined
 }
 
-export const WarRepository = Symbol("WarRepository")
+// eslint-disable-next-line ts/no-redeclare
+export const WarRepository = Symbol('WarRepository')

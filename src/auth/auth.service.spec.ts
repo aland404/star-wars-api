@@ -1,11 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import {UsersModule} from "../users/users.module";
-import {JwtModule} from "@nestjs/jwt";
-import {AuthController} from "./auth.controller";
+import type { TestingModule } from '@nestjs/testing'
+import { Test } from '@nestjs/testing'
+import { JwtModule } from '@nestjs/jwt'
+import { UsersModule } from '../users/users.module'
+import { AuthService } from './auth.service'
+import { AuthController } from './auth.controller'
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('authService', () => {
+  let service: AuthService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -15,16 +16,16 @@ describe('AuthService', () => {
           global: true,
           secret: 'temporary_secret_to_test',
           signOptions: { expiresIn: '180s' },
-        })
+        }),
       ],
       controllers: [AuthController],
-      providers: [AuthService]
-    }).compile();
+      providers: [AuthService],
+    }).compile()
 
-    service = module.get<AuthService>(AuthService);
-  });
+    service = module.get<AuthService>(AuthService)
+  })
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-});
+    expect(service).toBeDefined()
+  })
+})

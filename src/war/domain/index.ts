@@ -1,2 +1,2 @@
-export * from "./war"
-export * from "./warRepository.interface"
+export * from './war'
+export * from './warRepository.interface'

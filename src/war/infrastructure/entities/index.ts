@@ -1,1 +1,1 @@
-export * from "./war.entity"
+export * from './war.entity'
