@@ -7,8 +7,7 @@ export type People = {
 
 export enum Faction {
     EMPIRE = 'empire',
-    REBELLION = 'rebellion',
-    NONE = 'none'
+    REBELLION = 'rebellion'
 }
 
 export enum Kind {
@@ -18,7 +17,6 @@ export enum Kind {
     JEDI_MASTER='jedi-master',
     WOOKIE='wookie',
     IMPERIAL_OFFICER='imperial_officer',
-    BOUNTY_HUNTER='bounty_hunter',
     STORM_TROOPER='storm_trooper',
     SOLDIER='soldier',
     DROID='droid'

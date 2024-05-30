@@ -61,13 +61,6 @@ export const wookie = {
     faction: Faction.REBELLION,
     power: 50
 }
-
-export const bountyHunter = {
-    slug: Kind.BOUNTY_HUNTER,
-    kind: Kind.BOUNTY_HUNTER,
-    faction: Faction.NONE,
-    power: 75
-}
 export const imperialOfficer = {
     slug: Kind.IMPERIAL_OFFICER,
     kind: Kind.IMPERIAL_OFFICER,
@@ -86,7 +79,6 @@ export const people: People[] = [
     jediMaster,
     sith,
     sithLord,
-    bountyHunter,
     wookie,
     imperialOfficer,
     rebellionSoldier,

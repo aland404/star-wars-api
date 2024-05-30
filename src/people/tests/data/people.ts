@@ -21,13 +21,6 @@ const lukeSkywalker: People = {
     power: 200
 }
 
-const bobaFett: People = {
-    slug: 'boba-fette',
-    kind: Kind.BOUNTY_HUNTER,
-    faction: Faction.NONE,
-    power: 100
-}
-
 const unexistingJediMaster: People = {
     slug: 'unexisting-people',
     kind: Kind.JEDI_MASTER,
@@ -40,5 +33,5 @@ export const peopleForTest = {
     lukeSkywalker,
     unexistingPeople: unexistingJediMaster,
     jedis,
-    aMixOfDifferentKindOfPeople: [...jedis, darthVader, bobaFett]
+    aMixOfDifferentKindOfPeople: [...jedis, darthVader]
 }
