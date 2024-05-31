@@ -1,72 +1,84 @@
-import {Test, TestingModule} from '@nestjs/testing';
-import {INestApplication, ValidationPipe} from '@nestjs/common';
-import * as request from 'supertest';
-import {AppModule} from './../src/app.module';
-import {peopleForTest} from "../src/people/tests/data/people";
-import {UpdatePeopleDto} from "../src/people/infrastructure/dtos";
-import {Faction} from "../src/people/domain/people";
+import type { TestingModule } from '@nestjs/testing'
+import { Test } from '@nestjs/testing'
+import type { INestApplication } from '@nestjs/common'
+import { ValidationPipe } from '@nestjs/common'
+import * as request from 'supertest'
+import { warsForTest } from '../src/war/tests/data/wars'
+import type { WarPresenter } from '../src/war/infrastructure/presenters/war-presenter'
+import type { WarEntity } from '../src/war/infrastructure/entities'
+import { AppModule } from './../src/app.module'
 
-const MockedPeople = jest.requireMock('../src/people/infrastructure/people');
+const MockedPeople = jest.requireMock('../src/war/infrastructure/in-memory-wars')
 
-jest.mock('../src/people/infrastructure/people', () => ({
-    people: []
+jest.mock('../src/war/infrastructure/in-memory-wars', () => ({
+  wars: [],
 }))
 
 describe('AppController (e2e)', () => {
-    let app: INestApplication;
+  let app: INestApplication
 
-    beforeEach(async () => {
-        MockedPeople.people = [...peopleForTest.aMixOfDifferentKindOfPeople]
+  beforeEach(async () => {
+    MockedPeople.wars = [warsForTest.aWar]
 
-        const moduleFixture: TestingModule = await Test.createTestingModule({
-            imports: [AppModule],
-        }).compile();
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile()
 
-        app = moduleFixture.createNestApplication();
-        app.useGlobalPipes(new ValidationPipe());
-        await app.init();
-    });
+    app = moduleFixture.createNestApplication()
+    app.useGlobalPipes(new ValidationPipe())
+    await app.init()
+  })
 
-    it('/people (GET 200)', () => {
-        return request(app.getHttpServer())
-            .get('/people')
-            .expect(200)
-            .expect(MockedPeople.people);
-    });
+  it('/wars/client-api-war (GET 200)', () => {
+    const wars: WarEntity[] = MockedPeople.wars
+    const expectedWars: WarPresenter = {
+      slug: wars[0].slug,
+      name: wars[0].name,
+      description: wars[0].description,
+      battles: wars[0].battles.map(battle => ({
+        slug: battle.slug,
+        name: battle.name,
+        description: battle.description,
+        location: battle.location,
+        troops: battle.troops.map(troop => ({
+          slug: troop.slug,
+          people: troop.people,
+          number: troop.number,
+        })),
+      })),
+    }
 
-    it('/people?faction=rebellion (GET 200)', () => {
-        return request(app.getHttpServer())
-            .get('/people?faction=rebellion')
-            .expect(200)
-            .expect(peopleForTest.jedis);
-    });
+    return request(app.getHttpServer())
+      .get('/wars')
+      .expect(200)
+      .expect(expectedWars)
+  })
 
-    it('/people?faction=unexpectedFaction (GET 400)', () => {
-        return request(app.getHttpServer())
-            .get('/people?faction=unexpectedFaction')
-            .expect(400);
-    });
+  it('/wars/client-api-war (GET 200)', () => {
+    const wars: WarEntity[] = MockedPeople.wars
+    const expectedWar: WarPresenter = {
+      name: wars[0].name,
+      description: wars[0].description,
+      battles: wars[0].battles.map(war => ({
+        name: war.name,
+        description: war.description,
+        location: war.location,
+        troops: war.troops.map(troop => ({
+          people: troop.people,
+          number: troop.number,
+        })),
+      })),
+    }
 
-    it('/people/:peopleSlug (DELETE)', () => {
-        const peopleToDelete = peopleForTest.jedis[0]
+    return request(app.getHttpServer())
+      .get(`/wars/${warsForTest.aWar.slug}`)
+      .expect(200)
+      .expect(expectedWar)
+  })
 
-        return request(app.getHttpServer())
-            .delete(`/people/${peopleToDelete.slug}`)
-            .expect(200)
-            .expect(`People with slug ${peopleToDelete.slug} has been deleted`);
-    });
-
-    it('/people/:peopleSlug (PUT)', () => {
-        const peopleToUpdate = peopleForTest.jedis[1]
-        const fieldsToUpdate: UpdatePeopleDto = {
-            faction: Faction.REBELLION,
-            power: 77
-        }
-
-        return request(app.getHttpServer())
-            .put(`/people/${peopleToUpdate.slug}`)
-            .send(fieldsToUpdate)
-            .expect(200)
-            .expect({...peopleToUpdate, ...fieldsToUpdate});
-    });
-});
+  it('/wars/unexisting-war (GET 404)', () => {
+    return request(app.getHttpServer())
+      .get('/wars/unexisting-war')
+      .expect(404)
+  })
+})

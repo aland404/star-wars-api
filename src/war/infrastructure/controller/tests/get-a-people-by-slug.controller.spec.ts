@@ -1,9 +1,9 @@
 import type { TestingModule } from '@nestjs/testing'
 import { Test } from '@nestjs/testing'
-import { PeopleRepository } from '../../../domain/peopleRepository.interface'
-import { peopleForTest } from '../../../tests/data/people'
-import { InMemoryPeopleRepository } from '../../people.repository'
 import { WarController } from '../war.controller'
+import {PeopleRepository} from "../../../../people/domain/peopleRepository.interface";
+import {InMemoryPeopleRepository} from "../../../../people/infrastructure/people.repository";
+import {peopleForTest} from "../../../../people/tests/data/people";
 
 const MockedPeople = jest.requireMock('../../people')
 
