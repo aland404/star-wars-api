@@ -9,7 +9,7 @@ import {
   toWarSummaryPresenter,
 } from '../presenters/to-war-presenter'
 
-@ApiTags('wars')
+@ApiTags('war')
 @Controller('wars')
 export class WarController {
   constructor(@Inject(WarRepository) private readonly warRepository: WarRepository) {
