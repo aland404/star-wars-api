@@ -3,7 +3,7 @@ import type { Request } from 'express'
 import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { AuthGuard } from './auth.guard'
-import { SignInDto } from './sign-in.dto'
+import { PostGalacticPassportDto } from './post-galactic-passport.dto'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -12,8 +12,8 @@ export class AuthController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post('/galactic-passport')
-  signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.registrationNumber, signInDto.password)
+  getGalacticPassport(@Body() postGalacticPassport: PostGalacticPassportDto) {
+    return this.authService.signIn(postGalacticPassport.registrationNumber, postGalacticPassport.password)
   }
 
   @UseGuards(AuthGuard)

@@ -10,7 +10,7 @@
 * Three contexts:
   * People CRUD
   * Vehicles CRUD
-  * Auth (signIn and getProfile from token): jwt authentication with @nestjs/jwt
+  * Auth (getGalacticPassport and getProfile from token): jwt authentication with @nestjs/jwt
 2. API Collections with [Bruno](https://www.usebruno.com/)
 
 

@@ -9,14 +9,14 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, password: string): Promise<{ galactic_passport: string }> {
+  async signIn(username: string, password: string): Promise<{ galacticPassport: string }> {
     const user = await this.usersService.findOne(username)
     if (user?.password !== password) {
       throw new UnauthorizedException()
     }
     const payload = { sub: `user:${user.id}:${user.name}`, username: user.name }
     return {
-      galactic_passport: await this.jwtService.signAsync(payload),
+      galacticPassport: await this.jwtService.signAsync(payload),
     }
   }
 }
