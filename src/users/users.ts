@@ -3,17 +3,7 @@ import type { User } from './user'
 export const users: User[] = [
   {
     id: 1,
-    name: 'john',
-    password: 'changeme',
-  },
-  {
-    id: 2,
-    name: 'maria',
-    password: 'guess',
-  },
-  {
-    id: 3,
-    name: 'aland404',
-    password: '1secretP@ssword',
+    name: '7728398-9879870-8765007-42',
+    password: 'onlyYouCanSaveTheGalaxy',
   },
 ]
