@@ -1,5 +1,5 @@
 import type { People } from 'src/people/domain/people'
-import type { CreatePeopleDto } from '../dtos'
+import { CreatePeopleDto } from '../dtos'
 
 export function createPeopleDtoToPeople(peopleDto: CreatePeopleDto): People {
   return {

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import type { Faction } from '../domain/people'
 import type { PeopleRepository } from '../domain/peopleRepository.interface'
-import type { CreatePeopleDto, UpdatePeopleDto } from './dtos'
+import { CreatePeopleDto, UpdatePeopleDto } from './dtos'
 import { createPeopleDtoToPeople } from './mappers'
 import { people } from './people'
 import type { PeopleEntity } from './entities'

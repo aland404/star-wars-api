@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpException,
   HttpStatus,
   Inject,
@@ -14,9 +15,9 @@ import {
 import { ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Faction } from '../../domain/people'
 import { PeopleRepository } from '../../domain/peopleRepository.interface'
-import type { CreatePeopleDto, UpdatePeopleDto } from '../dtos'
-import type { GetPeopleQuery } from '../queries/GetPeopleQuery'
-import type { PeoplePresenter } from '../presenters/people.presenter'
+import { CreatePeopleDto, UpdatePeopleDto } from '../dtos'
+import { GetPeopleQuery } from '../queries/GetPeopleQuery'
+import { PeoplePresenter } from '../presenters/people.presenter'
 import { toPeoplePresenter } from '../presenters/to-people-presenter'
 
 @ApiTags('people')
@@ -25,6 +26,7 @@ export class PeopleController {
   constructor(@Inject(PeopleRepository) private readonly peopleRepository: PeopleRepository) {
   }
 
+  @HttpCode(HttpStatus.OK)
   @Get('/')
   @ApiQuery({ name: 'faction', enum: Faction, description: 'The faction of the people' })
   getPeople(@Query() queries?: GetPeopleQuery): PeoplePresenter[] {
@@ -45,6 +47,7 @@ export class PeopleController {
     return toPeoplePresenter(people)
   }
 
+  @HttpCode(HttpStatus.CREATED)
   @Post('/')
   createAPeople(@Body() peopleToCreate: CreatePeopleDto): PeoplePresenter {
     return toPeoplePresenter(this.peopleRepository.createAPeople(peopleToCreate))

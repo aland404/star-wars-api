@@ -4,7 +4,7 @@ import type { INestApplication } from '@nestjs/common'
 import { ValidationPipe } from '@nestjs/common'
 import * as request from 'supertest'
 import { peopleForTest } from '../src/people/tests/data/people'
-import type { UpdatePeopleDto } from '../src/people/infrastructure/dtos'
+import { UpdatePeopleDto } from '../src/people/infrastructure/dtos'
 import { Faction } from '../src/people/domain/people'
 import { AppModule } from './../src/app.module'
 
