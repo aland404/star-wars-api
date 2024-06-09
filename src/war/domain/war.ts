@@ -13,4 +13,5 @@ export enum Place {
   EARTH = 'earth',
   ANDOR = 'andor',
   SPACE = 'space',
+  KASHYYK = 'Kashyyyk',
 }

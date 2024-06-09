@@ -60,7 +60,7 @@ export const wookie = {
   slug: Kind.WOOKIE,
   kind: Kind.WOOKIE,
   faction: Faction.REBELLION,
-  power: 50,
+  power: 30,
 }
 export const imperialOfficer = {
   slug: Kind.IMPERIAL_OFFICER,
