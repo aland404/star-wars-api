@@ -11,6 +11,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common'
 import { ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Faction } from '../../domain/people'
@@ -19,6 +20,7 @@ import { CreatePeopleDto, UpdatePeopleDto } from '../dtos'
 import { GetPeopleQuery } from '../queries/GetPeopleQuery'
 import { PeoplePresenter } from '../presenters/people.presenter'
 import { toPeoplePresenter } from '../presenters/to-people-presenter'
+import { AuthGuard } from '../../../auth/auth.guard'
 
 @ApiTags('people')
 @Controller('people')
@@ -58,6 +60,7 @@ export class PeopleController {
     return toPeoplePresenter(this.peopleRepository.updateAPeople(peopleSlug, peopleToUpdate))
   }
 
+  @UseGuards(AuthGuard)
   @Post('/:peopleSlug/level-up')
   levelUpAPeople(@Param('peopleSlug') peopleSlug: string): PeoplePresenter {
     return toPeoplePresenter(this.peopleRepository.levelUpAPeople(peopleSlug))
