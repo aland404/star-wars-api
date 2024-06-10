@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import type { Faction } from '../domain/people'
 import type { PeopleRepository } from '../domain/peopleRepository.interface'
+import { getPowerForLevelUp } from '../domain/get-power-for-level-up'
+import { canBeLeveledUp } from '../domain/can-be-leveled-up'
 import { CreatePeopleDto, UpdatePeopleDto } from './dtos'
 import { createPeopleDtoToPeople } from './mappers'
 import { people } from './people'
@@ -50,5 +52,20 @@ export class InMemoryPeopleRepository implements PeopleRepository {
     people.push(peopleToAdd)
 
     return peopleToAdd
+  }
+
+  levelUpAPeople(peopleSlug: string): PeopleEntity {
+    const peopleToUpdateIndex = people.findIndex(people => people.slug === peopleSlug)
+    if (peopleToUpdateIndex < 0)
+      throw new HttpException('No corresponding people found', HttpStatus.NOT_FOUND)
+
+    // TODO: to move in use case
+    if (!canBeLeveledUp(people[peopleToUpdateIndex]))
+      throw new HttpException(`${people[peopleToUpdateIndex].kind} has already reached its maximum`, HttpStatus.UNPROCESSABLE_ENTITY)
+
+    const newPower = getPowerForLevelUp(people[peopleToUpdateIndex].faction)
+
+    people[peopleToUpdateIndex] = { ...people[peopleToUpdateIndex], power: people[peopleToUpdateIndex].power + newPower }
+    return createPeopleDtoToPeople(people[peopleToUpdateIndex])
   }
 }

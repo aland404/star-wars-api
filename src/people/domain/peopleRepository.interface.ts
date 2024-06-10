@@ -8,6 +8,7 @@ export interface PeopleRepository {
   deleteAPeopleBySug: (peopleSlug: string) => string
   getAPeopleBySlug: (slug: string) => PeopleEntity | undefined
   updateAPeople: (peopleSlug: string, peopleToUpdate: UpdatePeopleDto) => PeopleEntity
+  levelUpAPeople: (peopleSlug: string) => PeopleEntity
 }
 
 // eslint-disable-next-line ts/no-redeclare

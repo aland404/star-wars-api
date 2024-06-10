@@ -7,6 +7,7 @@ export const rebellionDroid = {
   faction: Faction.REBELLION,
   power: 20,
 }
+
 export const empireDroid = {
   slug: `${Faction.EMPIRE}-${Kind.DROID}`,
   kind: Kind.DROID,

@@ -57,4 +57,9 @@ export class PeopleController {
   updateAPeople(@Param('peopleSlug') peopleSlug: string, @Body() peopleToUpdate: UpdatePeopleDto): PeoplePresenter {
     return toPeoplePresenter(this.peopleRepository.updateAPeople(peopleSlug, peopleToUpdate))
   }
+
+  @Post('/:peopleSlug/level-up')
+  levelUpAPeople(@Param('peopleSlug') peopleSlug: string): PeoplePresenter {
+    return toPeoplePresenter(this.peopleRepository.levelUpAPeople(peopleSlug))
+  }
 }

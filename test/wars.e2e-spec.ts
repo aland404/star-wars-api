@@ -57,13 +57,15 @@ describe('AppController (e2e)', () => {
   it('/wars/client-api-war (GET 200)', () => {
     const wars: WarEntity[] = MockedPeople.wars
     const expectedWar: WarPresenter = {
+      slug: wars[0].slug,
       name: wars[0].name,
       description: wars[0].description,
-      battles: wars[0].battles.map(war => ({
-        name: war.name,
-        description: war.description,
-        location: war.location,
-        troops: war.troops.map(troop => ({
+      battles: wars[0].battles.map(battle => ({
+        slug: battle.slug,
+        name: battle.name,
+        description: battle.description,
+        location: battle.location,
+        troops: battle.troops.map(troop => ({
           people: troop.people,
           number: troop.number,
         })),
