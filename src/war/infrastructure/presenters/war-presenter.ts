@@ -6,6 +6,7 @@ export interface WarPresenter {
   name: string
   description?: string
   battles: BattlePresenter[]
+  currentDate: string
 }
 
 export interface WarSummaryPresenter {

@@ -51,6 +51,7 @@ export function toWarPresenter(warEntity: WarEntity): WarPresenter {
     name: warEntity.name,
     description: warEntity.description,
     battles: warEntity.battles.map(battle => toBattlePresenter(battle)),
+    currentDate: getCurrentDateFormatted(),
   }
 }
 
@@ -65,4 +66,13 @@ export function toWarSummaryPresenter(warEntity: WarEntity): WarSummaryPresenter
     loser: warResults.loser,
     winner: warResults.winner,
   }
+}
+
+function getCurrentDateFormatted() {
+  const today = new Date()
+  const day = String(today.getDate()).padStart(2, '0')
+  const month = String(today.getMonth() + 1).padStart(2, '0') // Les mois commencent à 0
+  const year = today.getFullYear()
+
+  return `${day}/${month}/${year}`
 }
