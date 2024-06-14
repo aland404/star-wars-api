@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, HttpStatus, Inject, Param } from '@nestjs/common'
+import { Body, Controller, Get, HttpException, HttpStatus, Inject, Param, Post, Version } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { WarRepository } from '../../domain'
 import type { BattlePresenter, BattleSummupPresenter, WarPresenter, WarSummaryPresenter } from '../presenters/war-presenter'
@@ -8,6 +8,7 @@ import {
   toWarPresenter,
   toWarSummaryPresenter,
 } from '../presenters/to-war-presenter'
+import { PeopleToAddToBattleDTO } from '../dtos'
 
 @ApiTags('war')
 @Controller('wars')
@@ -54,5 +55,15 @@ export class WarController {
       throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
 
     return toBattleSummaryPresenter(battleSummup)
+  }
+
+  @Version('2')
+  @Post('/:warSlug/battles/:battleSlug/add-people')
+  addPeopleToBattle(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
+    const battle = this.warRepository.addPeopleToBattle(warSlug, battleSlug, peopleToAddToBattle)
+    if (!battle)
+      throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
+
+    return toBattlePresenter(battle)
   }
 }

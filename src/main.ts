@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { Logger, ValidationPipe } from '@nestjs/common'
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -15,9 +15,10 @@ async function bootstrap() {
       Une gestion d'authentification est également disponible.`)
     .setVersion('1.0.0')
     .build()
+
+  app.enableVersioning({ type: VersioningType.URI })
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, document)
-
   app.enableCors()
   await app.listen(3000)
 
