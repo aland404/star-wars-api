@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Inject, Param, Post, Version } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Inject, Param, Post, Version } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { WarRepository } from '../../domain'
 import type { BattlePresenter, BattleSummupPresenter, WarPresenter, WarSummaryPresenter } from '../presenters/war-presenter'
@@ -81,6 +81,16 @@ export class WarController {
   @Post('/:warSlug/battles/:battleSlug/add-people')
   addPeopleToBattleV4(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
     const battle = this.warRepository.addPeopleToBattleHacked(warSlug, battleSlug, peopleToAddToBattle)
+    if (!battle)
+      throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
+
+    return toBattlePresenter(battle)
+  }
+
+  @HttpCode(666)
+  @Post('/:warSlug/battles/:battleSlug/win')
+  winTheBattleHacked(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string): BattlePresenter {
+    const battle = this.warRepository.getABattleBySlug(warSlug, battleSlug)
     if (!battle)
       throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
 
