@@ -59,8 +59,28 @@ export class WarController {
 
   @Version('2')
   @Post('/:warSlug/battles/:battleSlug/add-people')
-  addPeopleToBattle(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
+  addPeopleToBattleV2(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
+    const battle = this.warRepository.addPeopleToBattleHacked(warSlug, battleSlug, peopleToAddToBattle)
+    if (!battle)
+      throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
+
+    return toBattlePresenter(battle)
+  }
+
+  @Version('3')
+  @Post('/:warSlug/battles/:battleSlug/add-people')
+  addPeopleToBattleV3(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
     const battle = this.warRepository.addPeopleToBattle(warSlug, battleSlug, peopleToAddToBattle)
+    if (!battle)
+      throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
+
+    return toBattlePresenter(battle)
+  }
+
+  @Version('4')
+  @Post('/:warSlug/battles/:battleSlug/add-people')
+  addPeopleToBattleV4(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
+    const battle = this.warRepository.addPeopleToBattleHacked(warSlug, battleSlug, peopleToAddToBattle)
     if (!battle)
       throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
 

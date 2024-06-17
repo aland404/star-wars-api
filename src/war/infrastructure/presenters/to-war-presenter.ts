@@ -13,6 +13,7 @@ import type {
 
 function toTroopPresenter(troopEntity: TroopEntity): TroopPresenter {
   return {
+    slug: troopEntity.slug,
     people: troopEntity.people,
     number: troopEntity.number,
   }

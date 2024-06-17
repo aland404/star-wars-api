@@ -9,6 +9,8 @@ export interface WarRepository {
   getABattleBySlug: (warSlug: string, battleSlug: string) => BattleEntity | undefined
 
   addPeopleToBattle: (warSlug: string, battleSlug: string, peopleToAddToBattle: PeopleToAddToBattleDTO) => BattleEntity | undefined
+
+  addPeopleToBattleHacked: (warSlug: string, battleSlug: string, peopleToAddToBattle: PeopleToAddToBattleDTO) => BattleEntity | undefined
 }
 
 // eslint-disable-next-line ts/no-redeclare

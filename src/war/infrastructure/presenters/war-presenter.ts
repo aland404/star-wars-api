@@ -17,6 +17,7 @@ export interface WarSummaryPresenter {
 }
 
 export interface TroopPresenter {
+  slug: string
   people: People
   number: number
 }
