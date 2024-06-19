@@ -2,6 +2,7 @@ import { HttpException, HttpStatus } from '@nestjs/common'
 import type { BattleEntity, LocationEntity, TroopEntity, WarEntity } from '../entities'
 import { getBattleResults } from '../../domain/get-battle-results'
 import { getWarResults } from '../../domain/get-war-results'
+import { EMPIRE_HACKED_TEXT } from '../../domain'
 import type {
   BattlePresenter,
   BattleSummupPresenter,
@@ -12,6 +13,14 @@ import type {
 } from './war-presenter'
 
 function toTroopPresenter(troopEntity: TroopEntity): TroopPresenter {
+  return {
+    slug: troopEntity.slug.replace(EMPIRE_HACKED_TEXT, ''),
+    people: troopEntity.people,
+    number: troopEntity.number,
+  }
+}
+
+function toTroopPresenterHacked(troopEntity: TroopEntity): TroopPresenter {
   return {
     slug: troopEntity.slug,
     people: troopEntity.people,
@@ -34,6 +43,16 @@ export function toBattlePresenter(battleEntity: BattleEntity): BattlePresenter {
     description: battleEntity.description,
     location: toLocationPresenter(battleEntity.location),
     troops: battleEntity.troops.map(troop => toTroopPresenter(troop)),
+  }
+}
+
+export function toBattlePresenterHacked(battleEntity: BattleEntity): BattlePresenter {
+  return {
+    slug: battleEntity.slug,
+    name: battleEntity.name,
+    description: battleEntity.description,
+    location: toLocationPresenter(battleEntity.location),
+    troops: battleEntity.troops.map(troop => toTroopPresenterHacked(troop)),
   }
 }
 

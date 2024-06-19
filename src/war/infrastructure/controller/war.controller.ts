@@ -4,6 +4,7 @@ import { WarRepository } from '../../domain'
 import type { BattlePresenter, BattleSummupPresenter, WarPresenter, WarSummaryPresenter } from '../presenters/war-presenter'
 import {
   toBattlePresenter,
+  toBattlePresenterHacked,
   toBattleSummaryPresenter,
   toWarPresenter,
   toWarSummaryPresenter,
@@ -59,12 +60,12 @@ export class WarController {
 
   @Version('2')
   @Post('/:warSlug/battles/:battleSlug/add-people')
-  addPeopleToBattleV2(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
+  addPeopleToBattleV2Hacked(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
     const battle = this.warRepository.addPeopleToBattleHacked(warSlug, battleSlug, peopleToAddToBattle)
     if (!battle)
       throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
 
-    return toBattlePresenter(battle)
+    return toBattlePresenterHacked(battle)
   }
 
   @Version('3')
@@ -79,12 +80,12 @@ export class WarController {
 
   @Version('4')
   @Post('/:warSlug/battles/:battleSlug/add-people')
-  addPeopleToBattleV4(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
+  addPeopleToBattleV4Hacked(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToAddToBattle: PeopleToAddToBattleDTO): BattlePresenter {
     const battle = this.warRepository.addPeopleToBattleHacked(warSlug, battleSlug, peopleToAddToBattle)
     if (!battle)
       throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
 
-    return toBattlePresenter(battle)
+    return toBattlePresenterHacked(battle)
   }
 
   @HttpCode(666)

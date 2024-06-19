@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
-import type { WarRepository } from '../domain'
+import { EMPIRE_HACKED_TEXT, WarRepository } from '../domain'
 import { people } from '../../people/infrastructure/people'
 import { PeopleEntity } from '../../people/infrastructure/entities'
 import { Faction } from '../../people/domain/people'
