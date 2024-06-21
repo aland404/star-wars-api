@@ -10,7 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common'
-import { ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { Faction } from '../../domain/people'
 import { PeopleRepository } from '../../domain/peopleRepository.interface'
 import { GetPeopleQuery } from '../queries/GetPeopleQuery'
@@ -26,7 +26,12 @@ export class PeopleController {
 
   @HttpCode(HttpStatus.OK)
   @Get('/')
-  @ApiQuery({ name: 'faction', enum: Faction, description: 'The faction of the people' })
+  @ApiOperation({
+    summary: `Voir les informations de tous les personnages de la galaxie`,
+    description: `Voir les informations de tous les personnages de la galaxie.
+    Possibilité de ne voir que les personnage d'une même faction en filtrant par query.`,
+  })
+  @ApiQuery({ name: 'faction', enum: Faction, description: 'La faction du personnage' })
   getPeople(@Query() queries?: GetPeopleQuery): PeoplePresenter[] {
     return this.peopleRepository.getPeople(queries?.faction).map(people => toPeoplePresenter(people))
   }
@@ -57,6 +62,10 @@ export class PeopleController {
   // }
 
   @UseGuards(AuthGuard)
+  @ApiOperation({
+    summary: `Faire monter de niveau un type personnage`,
+    description: `Faire monter de niveau un type personnage si c'est possible pour lui, pour qu'il gagne en puissance.`,
+  })
   @Post('/:peopleSlug/level-up')
   levelUpAPeople(@Param('peopleSlug') peopleSlug: string): PeoplePresenter {
     return toPeoplePresenter(this.peopleRepository.levelUpAPeople(peopleSlug))
