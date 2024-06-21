@@ -1,5 +1,17 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Inject, Param, Post, Version } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Param,
+  Post,
+  Version,
+} from '@nestjs/common'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { WarRepository } from '../../domain'
 import type { BattlePresenter, BattleSummupPresenter, WarPresenter, WarSummaryPresenter } from '../presenters/war-presenter'
 import {
@@ -9,7 +21,8 @@ import {
   toWarPresenter,
   toWarSummaryPresenter,
 } from '../presenters/to-war-presenter'
-import { PeopleToAddToBattleDTO } from '../dtos'
+import { PeopleToAddToBattleDTO, PeopleToRemoveFromBattleDTO } from '../dtos'
+import { wookie } from '../../../people/infrastructure/people'
 
 @ApiTags('war')
 @Controller('wars')
@@ -92,6 +105,19 @@ export class WarController {
   @Post('/:warSlug/battles/:battleSlug/win')
   winTheBattleHacked(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string): BattlePresenter {
     const battle = this.warRepository.getABattleBySlug(warSlug, battleSlug)
+    if (!battle)
+      throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
+
+    return toBattlePresenter(battle)
+  }
+
+  @Delete('/:warSlug/battles/:battleSlug/kill-people')
+  @ApiOperation({
+    summary: `Tuer un type de personnage présent sur une bataille`,
+    description: `Permet de supprimer toutes les unités d'un type de personnage présents sur une bataille`,
+  })
+  removePeopleFromBattle(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string, @Body() peopleToRemoveFromBattle: PeopleToRemoveFromBattleDTO): BattlePresenter {
+    const battle = this.warRepository.removePeopleFromBattle(warSlug, battleSlug, peopleToRemoveFromBattle)
     if (!battle)
       throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
 

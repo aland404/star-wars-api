@@ -1,5 +1,5 @@
 import type { BattleEntity, WarEntity } from '../infrastructure/entities'
-import { PeopleToAddToBattleDTO } from '../infrastructure/dtos'
+import { PeopleToAddToBattleDTO, PeopleToRemoveFromBattleDTO } from '../infrastructure/dtos'
 
 export interface WarRepository {
   getAWarBySlug: (slug: string) => WarEntity | undefined
@@ -11,6 +11,8 @@ export interface WarRepository {
   addPeopleToBattle: (warSlug: string, battleSlug: string, peopleToAddToBattle: PeopleToAddToBattleDTO) => BattleEntity | undefined
 
   addPeopleToBattleHacked: (warSlug: string, battleSlug: string, peopleToAddToBattle: PeopleToAddToBattleDTO) => BattleEntity | undefined
+
+  removePeopleFromBattle: (warSlug: string, battleSlug: string, peopleToRemoveFromBattle: PeopleToRemoveFromBattleDTO) => BattleEntity | undefined
 }
 
 // eslint-disable-next-line ts/no-redeclare

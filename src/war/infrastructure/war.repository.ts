@@ -5,9 +5,7 @@ import { PeopleEntity } from '../../people/infrastructure/entities'
 import { Faction } from '../../people/domain/people'
 import type { BattleEntity, WarEntity } from './entities'
 import { wars } from './in-memory-wars'
-import { PeopleToAddToBattleDTO } from './dtos'
-
-const EMPIRE_HACKED_TEXT = `Vive l'empire!`
+import { PeopleToAddToBattleDTO, PeopleToRemoveFromBattleDTO } from './dtos'
 
 @Injectable()
 export class InMemoryWarsRepository implements WarRepository {
@@ -84,6 +82,30 @@ export class InMemoryWarsRepository implements WarRepository {
         number: peopleToAddToBattle.numberToAdd,
         slug: `troop-${people.kind}`,
       })
+    }
+
+    return battle
+  }
+
+  removePeopleFromBattle(warSlug: string, battleSlug: string, peopleToRemoveFromBattle: PeopleToRemoveFromBattleDTO): BattleEntity | undefined {
+    const battle = this.getABattleBySlug(warSlug, battleSlug)
+    if (!battle)
+      return undefined
+
+    const troopIndex = battle.troops.findIndex(troop => troop.people.slug === peopleToRemoveFromBattle.peopleSlug)
+
+    if (troopIndex < 0)
+      throw new HttpException(`No ${peopleToRemoveFromBattle.peopleSlug} to remove`, HttpStatus.NOT_FOUND)
+
+    const troop = battle.troops[troopIndex]
+    if (troop.number > 0) {
+      troop.number--
+      if (troop.slug.includes(EMPIRE_HACKED_TEXT)) {
+        troop.slug = troop.slug.replace(EMPIRE_HACKED_TEXT, '')
+      }
+    }
+    else {
+      delete battle.troops[troopIndex]
     }
 
     return battle
