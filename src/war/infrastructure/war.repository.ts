@@ -22,7 +22,14 @@ export class InMemoryWarsRepository implements WarRepository {
   }
 
   getABattleBySlug(warSlug: string, battleSlug: string): BattleEntity | undefined {
-    const foundWar = wars.find(war => war.slug === warSlug)?.battles.find(battle => battleSlug === battle.slug)
+    const foundWar = wars.find(war => war.slug === warSlug)
+      ?.battles.map(battle => ({
+        ...battle,
+        troops: battle.troops.map(troop => ({
+          ...troop,
+          people: this.getPeopleEntityFromSlug(troop.people.slug)!,
+        })),
+      })).find(battle => battleSlug === battle.slug)
     if (!foundWar)
       return undefined
 
