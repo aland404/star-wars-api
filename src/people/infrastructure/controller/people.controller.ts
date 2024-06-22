@@ -27,8 +27,8 @@ export class PeopleController {
   @HttpCode(HttpStatus.OK)
   @Get('/')
   @ApiOperation({
-    summary: `Voir les informations de tous les personnages de la galaxie`,
-    description: `Voir les informations de tous les personnages de la galaxie.
+    summary: `Voir les informations de tous les types de personnages de la galaxie`,
+    description: `Voir les informations de tous les types de personnages de la galaxie.
     Possibilité de ne voir que les personnage d'une même faction en filtrant par query.`,
   })
   @ApiQuery({ name: 'faction', enum: Faction, description: 'La faction du personnage' })
@@ -36,6 +36,10 @@ export class PeopleController {
     return this.peopleRepository.getPeople(queries?.faction).map(people => toPeoplePresenter(people))
   }
 
+  @ApiOperation({
+    summary: `Voir les informations d'un type de personnage de la galaxie`,
+    description: `Voir les informations d'un type de personnage de la galaxie.`,
+  })
   @Get('/:peopleSlug')
   getAPeopleBySlug(@Param('peopleSlug') peopleSlug: string): PeoplePresenter | undefined {
     const people = this.peopleRepository.getAPeopleBySlug(peopleSlug)

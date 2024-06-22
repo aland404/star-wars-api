@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator'
 
-export class PostGalacticPassportDto {
+export class PostGalacticPassportDTO {
   @IsString()
   @IsNotEmpty()
   readonly registrationNumber: string

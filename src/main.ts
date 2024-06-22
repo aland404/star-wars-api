@@ -11,8 +11,8 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Star Wars')
     .setDescription(`Cette API permet de manipuler des types de personnages de l'univers de Star Wars.
-      Elle permet également d'obtenir des informations sur des guerres et des batailles en fonctionn de troupes disponibles sur ces champs de batailles.
-      Une gestion d'authentification est également disponible.`)
+      Elle permet également d'obtenir des informations sur des guerres et des batailles en fonction des troupes disponibles sur ces champs de batailles.
+      La récupération d'un passeport galactique est également disponible.`)
     .setVersion('1.0.0')
     .build()
 

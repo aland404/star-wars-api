@@ -31,6 +31,10 @@ export class WarController {
   }
 
   @Get('/')
+  @ApiOperation({
+    summary: `Voir toutes les guerres de la galaxie`,
+    description: `Voir toutes les guerres de la galaxie.`,
+  })
   getWars(): WarPresenter[] {
     return this.warRepository.getWars().map(war => toWarPresenter(war))
   }
@@ -39,12 +43,16 @@ export class WarController {
     summary: `Gagner une guerre contre l'empire d'un seul coup`,
     description: `Permet de déclencher une puissance de feu sans pareil contre les troupes de l'empire et de gagner instantannément une guerre contre l'empire.`,
   })
-
+  @HttpCode(HttpStatus.OK)
   @Post('/win')
   winTheWarsHacked(): string {
-    return `Félicitations, vous venez de remporter la victoire contre l'empire, vous pouvez dormir sur vos deux oreilles 😈`
+    return `Félicitations 🎉 Vous venez de remporter la victoire contre l'empire, vous pouvez dormir sur vos deux oreilles 😈`
   }
 
+  @ApiOperation({
+    summary: `Voir une guerre de la galaxie`,
+    description: `Voir une guerre de la galaxie.`,
+  })
   @Get('/:warSlug')
   getAWarBySlug(@Param('warSlug') warSlug: string): WarPresenter | undefined {
     const war = this.warRepository.getAWarBySlug(warSlug)
@@ -54,6 +62,10 @@ export class WarController {
     return toWarPresenter(war)
   }
 
+  @ApiOperation({
+    summary: `Voir le résumé d'une guerre de la galaxie`,
+    description: `Voir le résumé d'une guerre de la galaxie.`,
+  })
   @Get('/:warSlug/summary')
   getAWarSummaryBySlug(@Param('warSlug') warSlug: string): WarSummaryPresenter | undefined {
     const war = this.warRepository.getAWarBySlug(warSlug)
@@ -67,15 +79,20 @@ export class WarController {
     summary: `Gagner une guerre contre l'empire d'un seul coup`,
     description: `Permet de déclencher une puissance de feu sans pareil contre les troupes de l'empire et de gagner instantannément une guerre contre l'empire.`,
   })
+  @HttpCode(HttpStatus.OK)
   @Post('/:warSlug/win')
   winTheWarHacked(@Param('warSlug') warSlug: string): string {
     const war = this.warRepository.getAWarBySlug(warSlug)
     if (!war)
       throw new HttpException('No battle was found with the given slug', HttpStatus.NOT_FOUND)
 
-    return `Félicitations, vous venez de remporter la guerre ${war.name}`
+    return `Félicitations 🎉 Vous venez de remporter la guerre ${war.name}`
   }
 
+  @ApiOperation({
+    summary: `Voir une bataille d'une guerre de la galaxie`,
+    description: `Voir une bataille d'une guerre de la galaxie.`,
+  })
   @Get('/:warSlug/battles/:battleSlug')
   getABattleBySlug(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string): BattlePresenter | undefined {
     const battle = this.warRepository.getABattleBySlug(warSlug, battleSlug)
@@ -85,6 +102,10 @@ export class WarController {
     return toBattlePresenter(battle)
   }
 
+  @ApiOperation({
+    summary: `Voir le résumé d'une bataille d'une guerre de la galaxie`,
+    description: `Voir le résumé d'une bataille d'une guerre de la galaxie.`,
+  })
   @Get('/:warSlug/battles/:battleSlug/summary')
   getABattleSummary(@Param('warSlug') warSlug: string, @Param('battleSlug') battleSlug: string): BattleSummupPresenter | undefined {
     const battleSummup = this.warRepository.getABattleBySlug(warSlug, battleSlug)
