@@ -67,7 +67,7 @@ export class PeopleController {
 
   @UseGuards(AuthGuard)
   @ApiOperation({
-    summary: `Faire monter de niveau un type personnage`,
+    summary: `Faire progresser un type personnage`,
     description: `Faire monter de niveau un type personnage si c'est possible pour lui, pour qu'il gagne en puissance.`,
   })
   @Post('/:peopleSlug/level-up')
