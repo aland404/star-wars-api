@@ -13,13 +13,20 @@ import {
 } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { WarRepository } from '../../domain'
-import type { BattlePresenter, BattleSummupPresenter, WarPresenter, WarSummaryPresenter } from '../presenters/war-presenter'
+import type {
+  BattlePresenter,
+  BattleSummupPresenter,
+  WarPresenter,
+  WarSummaryPresenter,
+  WarsPresenter,
+} from '../presenters/war-presenter'
 import {
   toBattlePresenter,
   toBattlePresenterHacked,
   toBattleSummaryPresenter,
   toWarPresenter,
   toWarSummaryPresenter,
+  toWarsPresenter,
 } from '../presenters/to-war-presenter'
 import { PeopleToAddToBattleDTO, PeopleToRemoveFromBattleDTO } from '../dtos'
 import { wookie } from '../../../people/infrastructure/people'
@@ -35,9 +42,18 @@ export class WarController {
     summary: `Voir toutes les guerres de la galaxie`,
     description: `Voir toutes les guerres de la galaxie.`,
   })
-  getWars(): WarPresenter[] {
-    return this.warRepository.getWars().map(war => toWarPresenter(war))
+  getWars(): WarsPresenter {
+    return toWarsPresenter(this.warRepository.getWars())
   }
+
+  // @Get('/summary')
+  // @ApiOperation({
+  //   summary: `Voir le résumé de toutes les guerres de la galaxie`,
+  //   description: `Voir le résumé de toutes les guerres de la galaxie.`,
+  // })
+  // getWarsSummary(): WarsSummaryPresenter {
+  //   return toWarsSummaryPresenter(this.warRepository.getWars())
+  // }
 
   @ApiOperation({
     summary: `Gagner une guerre contre l'empire d'un seul coup`,

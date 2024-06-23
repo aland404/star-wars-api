@@ -1,5 +1,14 @@
-import type { People } from '../../../people/domain/people'
+import { Faction, People } from '../../../people/domain/people'
 import type { BattleResult, Place, WarResult } from '../../domain'
+
+export interface WarsPresenter {
+  wars: WarPresenter[]
+  summary: WarsSummaryPresenter
+}
+export interface WarsSummaryPresenter {
+  loser: Faction
+  winner: Faction
+}
 
 export interface WarPresenter {
   slug: string

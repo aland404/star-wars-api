@@ -3,6 +3,7 @@ import type { BattleEntity, LocationEntity, TroopEntity, WarEntity } from '../en
 import { getBattleResults } from '../../domain/get-battle-results'
 import { getWarResults } from '../../domain/get-war-results'
 import { EMPIRE_HACKED_TEXT } from '../../domain'
+import { Faction } from '../../../people/domain/people'
 import type {
   BattlePresenter,
   BattleSummupPresenter,
@@ -10,6 +11,8 @@ import type {
   TroopPresenter,
   WarPresenter,
   WarSummaryPresenter,
+  WarsPresenter,
+  WarsSummaryPresenter,
 } from './war-presenter'
 
 function toTroopPresenter(troopEntity: TroopEntity): TroopPresenter {
@@ -62,6 +65,25 @@ export function toBattleSummaryPresenter(battleEntity: BattleEntity): BattleSumm
     name: battleEntity.name,
     loser: battleResults?.loser,
     winner: battleResults?.winner,
+  }
+}
+
+export function toWarsPresenter(warsEntity: WarEntity[]): WarsPresenter {
+  return {
+    wars: warsEntity.map(war => toWarPresenter(war)),
+    summary: toWarsSummaryPresenter(warsEntity),
+  }
+}
+
+export function toWarsSummaryPresenter(warsEntity: WarEntity[]): WarsSummaryPresenter {
+  const isEmpireWinningAtLeastOneWar = warsEntity.some((war) => {
+    const warResult = getWarResults(war)
+    return warResult?.winner.faction === Faction.EMPIRE
+  })
+
+  return {
+    winner: isEmpireWinningAtLeastOneWar ? Faction.EMPIRE : Faction.REBELLION,
+    loser: isEmpireWinningAtLeastOneWar ? Faction.REBELLION : Faction.EMPIRE,
   }
 }
 

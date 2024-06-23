@@ -4,13 +4,13 @@ import type { BattleResult } from './war'
 
 interface BattleResults { winner: BattleResult, loser?: BattleResult }
 
+interface PowerByFaction { [key: string]: number }
+
 export function getBattleResults(battleEntity: BattleEntity): BattleResults | undefined {
   if (!battleEntity.troops.length)
     return undefined
 
-  let max = 0
-  let min: number | undefined
-  const results = Object.values(Faction).reduce((acc, faction: Faction) => {
+  const powerByFaction = Object.values(Faction).reduce((acc, faction: Faction) => {
     const currentFaction = battleEntity.troops
       .filter(troop => troop.people.faction === faction)
     if (!currentFaction.length)
@@ -20,19 +20,15 @@ export function getBattleResults(battleEntity: BattleEntity): BattleResults | un
       return acc + (troop.people.power * troop.number)
     }, 0)
 
-    max = Math.max(powerOfCurrentFaction, max)
-    const isMax = max === powerOfCurrentFaction
-    min = !min ? powerOfCurrentFaction : Math.min(powerOfCurrentFaction, min)
-    const isMin = !min || min === powerOfCurrentFaction
-
     return {
-      winner: isMax ? { faction, totalPower: powerOfCurrentFaction } : acc.winner,
-      loser: isMin ? { faction, totalPower: powerOfCurrentFaction } : acc.loser,
+      ...acc,
+      [faction]: powerOfCurrentFaction,
     }
-  }, {} as BattleResults)
+  }, {} as PowerByFaction)
 
+  const isEmpireWinning = powerByFaction[Faction.EMPIRE] >= powerByFaction[Faction.REBELLION]
   return {
-    winner: results.winner,
-    loser: results.winner.faction === results.loser?.faction ? undefined : results.loser,
+    winner: isEmpireWinning ? { faction: Faction.EMPIRE, totalPower: powerByFaction[Faction.EMPIRE] } : { faction: Faction.REBELLION, totalPower: powerByFaction[Faction.REBELLION] },
+    loser: isEmpireWinning ? { faction: Faction.REBELLION, totalPower: powerByFaction[Faction.REBELLION] } : { faction: Faction.EMPIRE, totalPower: powerByFaction[Faction.EMPIRE] },
   }
 }
