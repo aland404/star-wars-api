@@ -36,6 +36,18 @@ export class InMemoryWarsRepository implements WarRepository {
     return foundWar
   }
 
+  saveBattle(warSlug: string, battleSlug: string, battle: BattleEntity) {
+    const warIndex = wars.findIndex(war => war.slug === warSlug)
+    if (warIndex < 0)
+      throw new HttpException('War not found', HttpStatus.NOT_FOUND)
+
+    const battleIndex = wars[warIndex].battles.findIndex(battle => battle.slug === battleSlug)
+    if (warIndex < 0)
+      throw new HttpException('Battle not found', HttpStatus.NOT_FOUND)
+
+    wars[warIndex].battles[battleIndex] = battle
+  }
+
   addPeopleToBattleHacked(warSlug: string, battleSlug: string, peopleToAddToBattle: PeopleToAddToBattleDTO): BattleEntity | undefined {
     const battle = this.getABattleBySlug(warSlug, battleSlug)
     if (!battle)
@@ -70,13 +82,16 @@ export class InMemoryWarsRepository implements WarRepository {
     if (!battle)
       return undefined
 
-    const troop = battle.troops.find(troop => troop.people.slug === peopleToAddToBattle.peopleSlug)
+    const foundTroop = battle.troops.find(troop => troop.people.slug === peopleToAddToBattle.peopleSlug)
 
-    if (troop) {
-      troop.number += peopleToAddToBattle.numberToAdd
-      if (troop.slug.includes(EMPIRE_HACKED_TEXT)) {
-        troop.slug = troop.slug.replace(EMPIRE_HACKED_TEXT, '')
+    if (foundTroop) {
+      foundTroop.number += peopleToAddToBattle.numberToAdd
+      const foundSlug = foundTroop.slug
+      if (foundTroop.slug.includes(EMPIRE_HACKED_TEXT)) {
+        foundTroop.slug = foundTroop.slug.replace(EMPIRE_HACKED_TEXT, '')
       }
+      battle.troops = battle.troops.map(troop => troop.slug === foundSlug ? foundTroop : troop)
+      this.saveBattle(warSlug, battleSlug, battle)
     }
     else {
       const people = this.getPeopleEntityFromSlug(peopleToAddToBattle.peopleSlug)
@@ -110,6 +125,7 @@ export class InMemoryWarsRepository implements WarRepository {
       if (troop.slug.includes(EMPIRE_HACKED_TEXT)) {
         troop.slug = troop.slug.replace(EMPIRE_HACKED_TEXT, '')
       }
+      this.saveBattle(warSlug, battleSlug, battle)
     }
     else {
       delete battle.troops[troopIndex]
