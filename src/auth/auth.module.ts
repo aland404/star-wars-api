@@ -10,7 +10,7 @@ import { AuthService } from './auth.service'
     JwtModule.register({
       global: true,
       secret: 'temporary_secret_to_test',
-      signOptions: { expiresIn: '180s' },
+      signOptions: { expiresIn: '3600s' },
     }),
   ],
   controllers: [AuthController],
