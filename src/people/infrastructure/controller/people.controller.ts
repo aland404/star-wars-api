@@ -27,7 +27,7 @@ export class PeopleController {
   @HttpCode(HttpStatus.OK)
   @Get('/')
   @ApiOperation({
-    summary: `Voir les informations de tous les types de personnages de la galaxie`,
+    summary: `Voir les informations de tous les types de personnages de la galaxie - possibilité de filtrer par faction`,
     description: `Voir les informations de tous les types de personnages de la galaxie.
     Possibilité de ne voir que les personnage d'une même faction en filtrant par query.`,
   })
