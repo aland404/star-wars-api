@@ -1,1 +1,1 @@
-export const EMPIRE_HACKED_TEXT = `Vive l'empire!`
+export const EMPIRE_HACKED_TEXT = `Vive l'empire !`
