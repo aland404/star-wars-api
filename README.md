@@ -8,8 +8,8 @@
 
 1. A simple server using [Nest](https://nestjs.com/) framework TypeScript for serving and manipulating people and resources from the Star Wars universe.
 * Three contexts:
-  * People CRUD
-  * Vehicles CRUD
+  * People (kind of people from star wars : Jedi, Sith, Wookie, ...)
+  * War (wars and battles)
   * Auth (getGalacticPassport and getProfile from token): jwt authentication with @nestjs/jwt
 2. API Collections with [Bruno](https://www.usebruno.com/)
 
