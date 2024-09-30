@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
 import { WarController } from './war/infrastructure/controller/war.controller'
@@ -7,6 +7,7 @@ import { InMemoryWarsRepository } from './war/infrastructure/war.repository'
 import { PeopleRepository } from './people/domain/peopleRepository.interface'
 import { InMemoryPeopleRepository } from './people/infrastructure/people.repository'
 import { PeopleController } from './people/infrastructure/controller/people.controller'
+import { AppLoggerMiddleware } from './infra/middlewares'
 
 @Module({
   imports: [AuthModule, UsersModule],
@@ -16,5 +17,9 @@ import { PeopleController } from './people/infrastructure/controller/people.cont
     { provide: WarRepository, useClass: InMemoryWarsRepository },
   ],
 })
-export class AppModule {
+
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AppLoggerMiddleware).forRoutes('*')
+  }
 }
